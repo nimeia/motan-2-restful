@@ -1,0 +1,19 @@
+GET http://localhost:8082/user
+Accept: application/json
+
+###
+GET http://localhost:8082/
+
+###
+GET http://localhost:8082/restful/user
+Accept: application/json
+
+###
+GET http://localhost:8082/restful
+
+###
+GET http://localhost:8081/jpa
+
+###
+GET http://localhost:8081/mybatis
+

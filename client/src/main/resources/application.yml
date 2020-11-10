@@ -1,0 +1,6 @@
+server:
+  port: 8082
+
+demo:
+  ribbon:
+    listOfServers: http://localhost:8081

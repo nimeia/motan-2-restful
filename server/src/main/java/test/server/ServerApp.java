@@ -13,7 +13,7 @@ import com.weibo.api.motan.util.MotanSwitcherUtil;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-@MapperScan("test.server.repo")
+@MapperScan("test.server.mybatis.mapper")
 public class ServerApp {
 
     public static void main(String[] args) {

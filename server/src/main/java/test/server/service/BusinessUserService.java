@@ -3,24 +3,37 @@ package test.server.service;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import test.server.entity.OrderEntity;
 import test.server.entity.UserEntity;
-import test.server.entity.UserPo;
-import test.server.repo.UserMapper;
+import test.server.mybatis.entity.Ordert;
+import test.server.mybatis.entity.User;
+import test.server.mybatis.mapper.OrdertMapper;
+import test.server.mybatis.mapper.UserMapper;
+import test.server.mybatis.service.IOrdertService;
+import test.server.mybatis.service.IUserService;
 import test.server.repo.UserRepos;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class UserService {
+public class BusinessUserService {
 
     @Autowired
     UserRepos userRepos;
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    OrdertMapper ordertMapper;
+
+
+    @Autowired
+//    @Qualifier()
+    IUserService userService;
 
     public List<UserEntity> findAll() {
         UserEntity user1 = new UserEntity();
@@ -44,9 +57,20 @@ public class UserService {
         return userRepos.findAll();
     }
 
-    public List<UserPo> findAllUserPo() {
-        Wrapper wrapper = new QueryWrapper();
+    public List<User> findAllUserPo() {
+        //你可以调用自动生成的service 去查询
+//        List<User>  users = userService.list();
+//        return users;
 
-        return userMapper.selectList(wrapper);
+        //或者可以用mapper查询 ，mapper 等同于 jap 的repos
+        Wrapper wrapper = new QueryWrapper();
+        List<User> users = userMapper.selectList(wrapper);
+
+        User user = userMapper.selectByUserId(1L);
+
+        Ordert ordert = ordertMapper.selectById(2L);
+//        System.out.println(ordert);
+        //注意输出时user 与 order 会出现循环引用报错，输出时要转成vo
+        return users;
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test.server.mybatis.mapper.OrdertMapper">
+    <resultMap id="orderResultMap" type="test.server.mybatis.entity.Ordert">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"/>
+        <association property="user"
+                     column="user_id" select="test.server.mybatis.mapper.UserMapper.selectByUserId"></association>
+    </resultMap>
+
+
+</mapper>

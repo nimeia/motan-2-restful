@@ -3,10 +3,8 @@ package test.server.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import test.api.User;
-import test.server.entity.UserEntity;
-import test.server.entity.UserPo;
-import test.server.service.UserService;
+import test.server.mybatis.entity.User;
+import test.server.service.BusinessUserService;
 
 import java.util.List;
 
@@ -15,17 +13,16 @@ import java.util.List;
 public class OrmController {
 
     @Autowired
-    UserService userService;
+    BusinessUserService businessUserService;
 
     @RequestMapping("jpa")
     public Object jpa(){
-        List<UserEntity> user = userService.findAll();
-        return user;
+        return businessUserService.findAll();
     }
 
     @RequestMapping("mybatis")
     public Object mybatis(){
-        List<UserPo> userPos = userService.findAllUserPo();
+        List<User> userPos = businessUserService.findAllUserPo();
 
         return userPos;
     }

@@ -20,12 +20,12 @@ public class DemoController {
     DemoRestApi demoRestApi;
 
     @RequestMapping("")
-    public Object index(){
+    public Object index() {
         return demoApi.hello("!  world");
     }
 
     @RequestMapping("user")
-    public Object user(){
+    public Object user() {
         User user = new User();
         user.setAge(100);
         user.setMoney(new BigDecimal(100));
@@ -34,12 +34,12 @@ public class DemoController {
     }
 
     @RequestMapping("restful")
-    public Object restfulIndex(){
+    public Object restfulIndex() {
         return demoRestApi.hello("!  world");
     }
 
     @RequestMapping("restful/user")
-    public Object restfulUser(){
+    public Object restfulUser() {
         User user = new User();
         user.setAge(100);
         user.setMoney(new BigDecimal(100));

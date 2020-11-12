@@ -147,13 +147,459 @@ List<Order> orders = orderMappers.findByUserId(userId);
 
 ```
 
-​	
-
-关于分页处理，mybatis 需要自己手写或者封装插件，对应比较著名的组件有
+​	关于分页处理，mybatis 需要自己手写或者封装插件，对应比较著名的组件有
 
 >  [mybatis plus](https://github.com/baomidou/mybatis-plus)
 >
 > https://github.com/pagehelper/Mybatis-PageHelper
 >
 > https://github.com/abel533/Mapper
+
+下面以 `mybatis plus ` 插件整合为例描述整个迁移过程
+
+### 整合mybatis plus 
+
+-  增加对应的依赖
+
+  ```xml
+          <dependency>
+              <groupId>org.springframework.boot</groupId>
+              <artifactId>spring-boot-starter-data-jpa</artifactId>
+          </dependency>
+  
+  <!--        mybatis plus 依赖， generator 用于从数据库反向生成代码-->
+          <dependency>
+              <groupId>com.baomidou</groupId>
+              <artifactId>mybatis-plus-boot-starter</artifactId>
+              <version>3.2.0</version>
+          </dependency>
+          <dependency>
+              <groupId>com.baomidou</groupId>
+              <artifactId>mybatis-plus-generator</artifactId>
+              <version>3.4.1</version>
+              <scope>test</scope>
+          </dependency>
+  
+  <!--        用于开发时输出对应的sql 日志-->
+          <dependency>
+              <groupId>com.googlecode.log4jdbc</groupId>
+              <artifactId>log4jdbc</artifactId>
+              <version>1.2</version>
+          </dependency>
+  <!--        方便演示使用内嵌的数据库，web 界面请见 application.yml-->
+          <dependency>
+              <groupId>com.h2database</groupId>
+              <artifactId>h2</artifactId>
+          </dependency>
+  ```
+
+  其中需要注意的是，当去除`spring-boot-starter-data-jpa` 后可能会报没有数据源相关依赖，需要改成引用`spring-boot-starter-data-jdbc`
+
+  ### 相关配置项
+
+  例子中使用log4jdbc输出sql ,配置如下
+
+  ```yml
+  spring:
+    jpa:
+      hibernate:
+        ddl-auto: update
+    datasource:
+  #    url: jdbc:h2:~/test
+      url: jdbc:log4jdbc:h2:~/test
+      username: sa
+      password: sa
+      driver-class-name: net.sf.log4jdbc.DriverSpy
+    #    driver-class-name: org.h2.Driver
+  
+    h2:
+      console:
+        enabled: true
+        settings:
+          web-allow-others: true
+          trace: true
+        path: /h2
+  logging:
+    level:
+      jdbc: error
+      jdbc.sqltiming: info
+  
+  ```
+
+  
+
+相关配置主要有下面三部分
+
+```yaml
+#    url: jdbc:h2:~/test
+    url: jdbc:log4jdbc:h2:~/test
+```
+
+```yaml
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+  #    driver-class-name: org.h2.Driver
+```
+
+```yaml
+    jdbc: error
+    jdbc.sqltiming: info
+```
+
+### 代码自动生成
+
+配置反射代码生成，详细主见 `MybatisGenerator.java` 
+
+```java
+package test.server;
+
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.InjectionConfig;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.po.TableInfo;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class MybatisGenerator {
+
+        /*代码生成器
+        AutoGenerator 是 MyBatis-Plus 的代码生成器，通过 AutoGenerator 可以快速生成 Entity、Mapper、Mapper XML、Service、Controller 等各个模块的代码，极大的提升了开发效率。
+
+        特别说明:
+
+        自定义模板有哪些可用参数？Github Gitee AbstractTemplateEngine 类中方法 getObjectMap 返回 objectMap 的所有值都可用。
+
+        演示效果图：
+
+        relationship*/
+
+// 演示例子，执行 main 方法控制台输入模块表名回车自动生成对应项目目录中
+
+    /**
+     * <p>
+     * 读取控制台内容
+     * </p>
+     */
+    public static String scanner(String tip) {
+        Scanner scanner = new Scanner(System.in);
+        StringBuilder help = new StringBuilder();
+        help.append("请输入" + tip + "：");
+        System.out.println(help.toString());
+        if (scanner.hasNext()) {
+            String ipt = scanner.next();
+            if (StringUtils.isNotBlank(ipt)) {
+                return ipt;
+            }
+        }
+        throw new MybatisPlusException("请输入正确的" + tip + "！");
+    }
+
+    public static void main(String[] args) {
+        // 代码生成器
+        AutoGenerator mpg = new AutoGenerator();
+
+        // 全局配置
+        GlobalConfig gc = new GlobalConfig();
+        String projectPath = "D:\\dev\\motan-demo\\server";
+        gc.setOutputDir(projectPath + "/src/main/java");
+        gc.setAuthor("hgq@sinosoft");
+        gc.setOpen(false);
+        // gc.setSwagger2(true); 实体属性 Swagger2 注解
+        mpg.setGlobalConfig(gc);
+
+        // 数据源配置
+        DataSourceConfig dsc = new DataSourceConfig();
+//        dsc.setUrl("jdbc:mysql://localhost:3306/ant?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:h2:~/test");
+        dsc.setDbType(DbType.H2);
+        // dsc.setSchemaName("public");
+        dsc.setDriverName("org.h2.Driver");
+        dsc.setUsername("sa");
+        dsc.setPassword("sa");
+        mpg.setDataSource(dsc);
+
+        // 包配置
+        PackageConfig pc = new PackageConfig();
+
+//        pc.setModuleName(scanner("模块名"));
+        pc.setModuleName("mybatis");
+
+        pc.setParent("test.server");
+        mpg.setPackageInfo(pc);
+
+        // 自定义配置
+        InjectionConfig cfg = new InjectionConfig() {
+            @Override
+            public void initMap() {
+                // to do nothing
+            }
+        };
+
+        // 如果模板引擎是 freemarker
+        String templatePath = "/templates/mapper.xml.ftl";
+        // 如果模板引擎是 velocity
+        // String templatePath = "/templates/mapper.xml.vm";
+
+        // 自定义输出配置
+        List<FileOutConfig> focList = new ArrayList<>();
+        // 自定义配置会被优先输出
+        focList.add(new FileOutConfig(templatePath) {
+            @Override
+            public String outputFile(TableInfo tableInfo) {
+                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+                return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
+                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+            }
+        });
+        /*
+        cfg.setFileCreate(new IFileCreate() {
+            @Override
+            public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
+                // 判断自定义文件夹是否需要创建
+                checkDir("调用默认方法创建的目录，自定义目录用");
+                if (fileType == FileType.MAPPER) {
+                    // 已经生成 mapper 文件判断存在，不想重新生成返回 false
+                    return !new File(filePath).exists();
+                }
+                // 允许生成模板文件
+                return true;
+            }
+        });
+        */
+        cfg.setFileOutConfigList(focList);
+        mpg.setCfg(cfg);
+
+        // 配置模板
+        TemplateConfig templateConfig = new TemplateConfig();
+
+        // 配置自定义输出模板
+        //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
+        // templateConfig.setEntity("templates/entity2.java");
+        // templateConfig.setService();
+        // templateConfig.setController();
+
+        templateConfig.setXml(null);
+        mpg.setTemplate(templateConfig);
+
+        // 策略配置
+        StrategyConfig strategy = new StrategyConfig();
+        strategy.setNaming(NamingStrategy.underline_to_camel);
+        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
+//        strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
+        strategy.setEntityLombokModel(false);
+//        strategy.setEntityLombokModel(true);
+
+        strategy.setRestControllerStyle(true);
+        // 公共父类
+
+//        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
+        // 写于父类中的公共字段
+        strategy.setSuperEntityColumns("id");
+
+//        strategy.setInclude(scanner("表名，多个英文逗号分割").split(","));
+        strategy.setInclude("USER,ORDERT".split(","));
+
+
+        strategy.setControllerMappingHyphenStyle(true);
+        strategy.setTablePrefix(pc.getModuleName() + "_");
+        mpg.setStrategy(strategy);
+        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        mpg.execute();
+    }
+}
+
+```
+
+其中代码中需要注意带注释的地方，使用请先看一遍代码。另外代码生成器需要选择对应的模板引擎，例子中使用
+
+```xml
+        <dependency>	
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-freemarker</artifactId>
+        </dependency>
+```
+
+
+
+代码生成器会自动生成如下格式代码。
+
+```shell
+D:.
+├─controller
+│      OrdertController.java
+│      UserController.java
+│
+├─entity
+│      Ordert.java
+│      User.java
+│
+├─mapper
+│      OrdertMapper.java
+│      UserMapper.java
+│
+└─service
+    │  IOrdertService.java
+    │  IUserService.java
+    │
+    └─impl
+            OrdertServiceImpl.java
+            UserServiceImpl.java
+------------------------------
+D:.
+│  application.yml
+│
+└─mapper
+    └─mybatis
+            OrdertMapper.xml
+            UserMapper.xml
+
+```
+
+其中controller 是controller ，如果没用可以删除。***生成代码时建议生成到一个独立的 package 下，再改自己的需要进行重构命名***
+
+在改造时 你可以使用mapper 直接代替 jpa 中的 repos 。service 是自动生成的一些实用方法的封装，在项目当前情况你可以当前一个dao 层代替直接访问 mapper 。 为了与现有的service 层区分开，建议在代码生成时配置生成后缀为其它，例如dao
+
+```java
+        gc.setServiceName("I%sDao");
+        gc.setServiceImplName("%sDaoImpl");
+```
+
+### 一对多关联配置
+
+mybatis 的级联查询主要使用了 `association` 和 `collection` 。配置如下 
+
+`usermapp.mxl`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test.server.mybatis.mapper.UserMapper">
+
+    <resultMap id="userResultMap" type="test.server.mybatis.entity.User">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"/>
+        <collection property="ordertList" column="id" select="selectOrderByUserId"/>
+    </resultMap>
+
+    <select id="selectOrderByUserId" parameterType="int" resultMap="test.server.mybatis.mapper.OrdertMapper.orderResultMap">
+        select id,name,user_id from ordert where user_id = #{id}
+    </select>
+
+    <select id="selectByUserId" parameterType="long" resultMap="userResultMap">
+        select id,name from user where id= #{id}
+    </select>
+
+</mapper>
+```
+
+`OrdertMapper.xml`
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="test.server.mybatis.mapper.OrdertMapper">
+    <resultMap id="orderResultMap" type="test.server.mybatis.entity.Ordert">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"/>
+        <association property="user"
+                     column="user_id" select="test.server.mybatis.mapper.UserMapper.selectByUserId"></association>
+    </resultMap>
+</mapper>
+```
+
+这两个文件的变更都为新增。需要生成自动改mybatis 的规范配置，这不做说明。
+
+在映射类里需要用tablename 注意指定对应的resultmap,否则不生效。
+
+```java
+package test.server.mybatis.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * <p>
+ * 
+ * </p>
+ *
+ * @author hgq@sinosoft
+ * @since 2020-11-11
+ */
+@TableName(value = "ORDERT",resultMap = "orderResultMap")
+public class Ordert implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    private String name;
+
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    //    private Long userId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+//    public Long getUserId() {
+//        return userId;
+//    }
+//
+//    public void setUserId(Long userId) {
+//        this.userId = userId;
+//    }
+
+    @Override
+    public String toString() {
+        return "Ordert{" +
+                "}";
+    }
+
+}
+
+```
+
+其中一对多的关联需要自动加。对应的注解中增加resultmap `@TableName(value = "ORDERT",resultMap = "orderResultMap")`
+
+### 级联保存
+
+请在自动生成的代码 service层中自行处理。mybatis 并没有官方的解决方案
+
+### 注意事项
+
+**不能直接把po ,entity 层的对象输出成json**
+
+
 

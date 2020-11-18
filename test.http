@@ -11,9 +11,8 @@ Accept: application/json
 ###
 GET http://localhost:8082/restful
 
-###
+### jap 功能设置
 GET http://localhost:8081/jpa
 
 ###
 GET http://localhost:8081/mybatis
-

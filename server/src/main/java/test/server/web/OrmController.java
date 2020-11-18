@@ -1,5 +1,6 @@
 package test.server.web;
 
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,14 @@ public class OrmController {
 
     @RequestMapping("jpa")
     public Object jpa(){
-        return businessUserService.findAll();
+
+        //jpa 保存级联例子
+//        businessUserService.japSave();
+
+        //jpa 查询例子
+        businessUserService.jpaQuery();
+
+        return Maps.newHashMap();
     }
 
     @RequestMapping("mybatis")

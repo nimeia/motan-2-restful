@@ -2,6 +2,7 @@ package test.server.service;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -63,7 +64,22 @@ public class BusinessUserService {
 //        return users;
 
         //或者可以用mapper查询 ，mapper 等同于 jap 的repos
-        Wrapper wrapper = new QueryWrapper();
+        QueryWrapper wrapper = new QueryWrapper();
+
+        wrapper.eq("name","hello");
+//        wrapper.order
+//
+//        User user1 = new User();
+//        user1.setName("huang");
+//        userMapper.insert(user1);
+
+//        Long id=1328991782443573249L;
+
+        Page<User> page = new Page<>(0,10);
+        Page<User> userPage = userMapper.selectPage(page, wrapper);
+        List<User> records = userPage.getRecords();
+
+
         List<User> users = userMapper.selectList(wrapper);
 
         User user = userMapper.selectByUserId(1L);
@@ -71,6 +87,8 @@ public class BusinessUserService {
         Ordert ordert = ordertMapper.selectById(2L);
 //        System.out.println(ordert);
         //注意输出时user 与 order 会出现循环引用报错，输出时要转成vo
-        return users;
+
+//        userMapper.
+        return null;
     }
 }

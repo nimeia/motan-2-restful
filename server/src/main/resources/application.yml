@@ -8,14 +8,14 @@ spring:
     username: sa
     password: sa
     driver-class-name: net.sf.log4jdbc.DriverSpy
-  #    driver-class-name: org.h2.Driver
+#    driver-class-name: org.h2.Driver
 
   h2:
     console:
       enabled: true
       settings:
         web-allow-others: true
-        trace: true
+#        trace: true
       path: /h2
 logging:
   level:

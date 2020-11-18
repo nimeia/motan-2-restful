@@ -24,7 +24,17 @@ public class Ordert implements Serializable {
 
     private String name;
 
+    private Long userId;
+
     private User user;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public User getUser() {
         return user;

@@ -5,7 +5,7 @@
     <resultMap id="userResultMap" type="test.server.mybatis.entity.User">
         <id column="id" property="id"></id>
         <result property="name" column="name"/>
-        <collection property="ordertList" column="id" select="selectOrderByUserId"/>
+        <collection property="ordertList" column="id" fetchType="lazy" select="selectOrderByUserId"/>
     </resultMap>
 
     <select id="selectOrderByUserId" parameterType="int" resultMap="test.server.mybatis.mapper.OrdertMapper.orderResultMap">

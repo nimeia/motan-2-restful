@@ -4,7 +4,8 @@
     <resultMap id="orderResultMap" type="test.server.mybatis.entity.Ordert">
         <id column="id" property="id"></id>
         <result property="name" column="name"/>
-        <association property="user"
+        <result property="userId" column="userId"/>
+        <association property="user" fetchType="lazy"
                      column="user_id" select="test.server.mybatis.mapper.UserMapper.selectByUserId"></association>
     </resultMap>
 

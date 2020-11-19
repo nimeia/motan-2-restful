@@ -38,6 +38,8 @@ public class OrmController {
         List<User> userPos = businessUserService.mybatisSave();
 
 
+        businessUserService.mybatisQuery();
+
 
         return userPos;
     }

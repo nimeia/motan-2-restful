@@ -16,4 +16,8 @@
         select id,name from user where id= #{id}
     </select>
 
+    <select id="selectByName" resultType="test.server.mybatis.entity.User">
+        select * from user where name = #{name}
+    </select>
+
 </mapper>

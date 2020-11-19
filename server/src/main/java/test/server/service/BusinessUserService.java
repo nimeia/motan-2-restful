@@ -1,6 +1,7 @@
 package test.server.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -133,9 +134,8 @@ public class BusinessUserService {
         wrapper.eq("name", "hello");
 
         // 带分页的查询
-        Page<User> page = new Page<>(0, 10);
+        Page<User> page = new Page<>(0, 2);
         Page<User> userPage = userMapper.selectPage(page, wrapper);
-        List<User> records = userPage.getRecords();
 
         //按条件查询
         List<User> users = userMapper.selectList(wrapper);
@@ -143,6 +143,10 @@ public class BusinessUserService {
         // 按id 查询
         User user = userMapper.selectByUserId(1L);
         Ordert ordert = ordertMapper.selectById(2L);
+
+        // native sql 分页例子
+        List<User> userList = userMapper.selectByName("demo");
+        IPage<User> userIPage = userMapper.selectByName(page,"hello");
 
         return null;
     }

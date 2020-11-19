@@ -18,10 +18,11 @@ public class OrmController {
 
     /**
      * jap 使用例子
+     *
      * @return
      */
     @RequestMapping("jpa")
-    public Object jpa(){
+    public Object jpa() {
 
         //jpa 保存级联例子
         //businessUserService.japSave();
@@ -33,7 +34,7 @@ public class OrmController {
     }
 
     @RequestMapping("mybatis")
-    public Object mybatis(){
+    public Object mybatis() {
         //mybatis 保存例子，例子中使用了mybatis plus ，未使用过的同事请先阅读对应的文档
         List<User> userPos = businessUserService.mybatisSave();
 

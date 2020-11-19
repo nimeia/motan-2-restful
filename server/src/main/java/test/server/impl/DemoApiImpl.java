@@ -8,7 +8,7 @@ import test.api.User;
 public class DemoApiImpl implements DemoApi {
     @Override
     public String hello(String world) {
-        return "hello:"+ world;
+        return "hello:" + world;
     }
 
     @Override

@@ -15,13 +15,13 @@ import java.io.IOException;
 public class DebugConfig {
 
     @Bean
-    public Filter f( ){
+    public Filter f() {
         return new OncePerRequestFilter() {
             @Override
             protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
                 System.out.println(httpServletRequest.getRequestURI());
 
-                filterChain.doFilter(httpServletRequest,httpServletResponse);
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
             }
         };
     }

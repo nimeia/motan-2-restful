@@ -7,7 +7,7 @@ import test.server.mybatis.service.IUserService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author hgq@sinosoft

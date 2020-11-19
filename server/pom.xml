@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>motan-demo</artifactId>
@@ -36,7 +36,7 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-<!--        mybatis plus 依赖， generator 用于从数据库反向生成代码-->
+        <!--        mybatis plus 依赖， generator 用于从数据库反向生成代码-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -49,13 +49,13 @@
             <scope>test</scope>
         </dependency>
 
-<!--        用于开发时输出对应的sql 日志-->
+        <!--        用于开发时输出对应的sql 日志-->
         <dependency>
             <groupId>com.googlecode.log4jdbc</groupId>
             <artifactId>log4jdbc</artifactId>
             <version>1.2</version>
         </dependency>
-<!--        方便演示使用内嵌的数据库，web 界面请见 application.yml-->
+        <!--        方便演示使用内嵌的数据库，web 界面请见 application.yml-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -76,16 +76,16 @@
             <artifactId>motan-transport-netty</artifactId>
             <version>${motan.version}</version>
         </dependency>
-       <!-- <dependency>
-            <groupId>com.weibo</groupId>
-            <artifactId>motan-registry-zookeeper</artifactId>
-            <version>${motan.version}</version>
-        </dependency>-->
-       <!-- <dependency>
-            <groupId>com.weibo</groupId>
-            <artifactId>motan-protocol-restful</artifactId>
-            <version>${motan.version}</version>
-        </dependency>-->
+        <!-- <dependency>
+             <groupId>com.weibo</groupId>
+             <artifactId>motan-registry-zookeeper</artifactId>
+             <version>${motan.version}</version>
+         </dependency>-->
+        <!-- <dependency>
+             <groupId>com.weibo</groupId>
+             <artifactId>motan-protocol-restful</artifactId>
+             <version>${motan.version}</version>
+         </dependency>-->
 
         <dependency>
             <groupId>com.weibo</groupId>

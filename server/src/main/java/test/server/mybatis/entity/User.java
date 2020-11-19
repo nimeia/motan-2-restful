@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hgq@sinosoft
@@ -56,7 +56,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-        "}";
+                "}";
     }
 
     @Override

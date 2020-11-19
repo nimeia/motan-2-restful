@@ -14,7 +14,7 @@ public class DemoApiRestfulImpl implements DemoApi {
     @Override
     @RequestMapping
     public String hello(@RequestParam("world") String world) {
-        return "restful hello !" +world;
+        return "restful hello !" + world;
     }
 
     @Override

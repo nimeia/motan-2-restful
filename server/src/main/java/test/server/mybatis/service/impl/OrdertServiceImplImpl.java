@@ -7,13 +7,13 @@ import test.server.mybatis.service.IOrdertService;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author hgq@sinosoft
  * @since 2020-11-11
  */
 @Service
-public class OrdertServiceImplImpl extends BaseServiceImpl<OrdertMapper, Ordert> implements IOrdertService{
+public class OrdertServiceImplImpl extends BaseServiceImpl<OrdertMapper, Ordert> implements IOrdertService {
 
 }

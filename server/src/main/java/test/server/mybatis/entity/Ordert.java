@@ -8,13 +8,13 @@ import java.io.Serializable;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author hgq@sinosoft
  * @since 2020-11-11
  */
-@TableName(value = "ORDERT",resultMap = "orderResultMap")
+@TableName(value = "ORDERT", resultMap = "orderResultMap")
 public class Ordert implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -75,7 +75,6 @@ public class Ordert implements Serializable {
         return "Ordert{" +
                 "}";
     }
-
 
 
 }

@@ -124,8 +124,8 @@ public class BusinessUserService {
 
         // 级联保存，其实就是把所有sql 写到xml ,不建议使用
         // 这种情况 字表的id 可能不会自动生成，
-        ordert1.setId(System.currentTimeMillis() +1);
-        ordert2.setId(System.currentTimeMillis() +2);
+        ordert1.setId(System.currentTimeMillis() + 1);
+        ordert2.setId(System.currentTimeMillis() + 2);
         userMapper.insertAll(demoUser);
 
         return null;
@@ -133,6 +133,7 @@ public class BusinessUserService {
 
     /**
      * mybatis 查询演示，例子中使用 mybatis plus
+     *
      * @return
      */
     public List<User> mybatisQuery() {
@@ -160,7 +161,7 @@ public class BusinessUserService {
         // native sql 分页例子
         // 注意观察 xml 中使用了resultmap ,如果不定义，关联对象不会自动查询
         List<User> userList = userMapper.selectByName("demo");
-        IPage<User> userIPage = userMapper.selectByName(page,"hello");
+        IPage<User> userIPage = userMapper.selectByName(page, "hello");
 
         return null;
     }

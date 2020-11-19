@@ -15,7 +15,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("test.api")
 public class ClientDemoApp {
     public static void main(String[] args) {
-        SpringApplication.run(ClientDemoApp.class,args);
+        SpringApplication.run(ClientDemoApp.class, args);
     }
 
     @Bean

@@ -1,3 +1,13 @@
+POST http://localhost:8081/_api/demo
+Content-Type: application/json
+
+{
+  "id": 1000,
+  "name": "huang"
+}
+
+
+###
 GET http://localhost:8082/user
 Accept: application/json
 

@@ -2,6 +2,18 @@
 
 [toc]
 
+
+
+## 样例阅读说明
+
+### 项目说明
+
+| 项目   | 说明                                                         |
+| ------ | ------------------------------------------------------------ |
+| api    | 主要演示motan 转 feign后的 接口层的变化                      |
+| client | 主要演示了怎样使用feign 调用后端接口                         |
+| server | 主要演示motan 转feign 的交换器层的变化 与 jpa 转mybatis 的变化 |
+
 ## motan 转 feign
 
 一般 motan 定义的接口会需要先定义一个接口类 `interface`
@@ -125,6 +137,61 @@ demo:
 
 ## jpa 转 mybatic
 
+### 样例说明
+
+样例程序入口
+
+> ```java
+> test.server.web.OrmController
+> ```
+
+```java
+/**
+* jap 使用例子
+*
+* @return
+*/
+@RequestMapping("jpa")
+public Object jpa() {
+    //jpa 保存级联例子
+    businessUserService.japSave();
+    //jpa 查询例子
+    businessUserService.jpaQuery();
+
+    return Maps.newHashMap();
+}
+
+@RequestMapping("mybatis")
+public Object mybatis() {
+    // mybatis 保存例子，例子中使用了mybatis plus ，未使用过的同事请先阅读对应的文档
+    List<User> userPos = businessUserService.mybatisSave();
+    // mybatis 查询例子
+    businessUserService.mybatisQuery();
+
+    return userPos;
+}
+
+/**
+     * jpa 转 mybatis 显示
+     * @return
+     */
+@RequestMapping("j2m")
+public Object jpaToMybatis(){
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setName("jpa to mybatis demo");
+    businessUserService.jpaToMybatisDemo(userEntity);
+
+    return null;
+}
+```
+
+> 如果对jpa 或者mybatis 不是很熟悉的用户，请先阅读 jpa 与 mybatis 的两个方法。
+>
+> jpaToMybatis 方法演示了的是一个转换的例子
+>
+> ***开发人员改造时请先阅读完对应的代码***
+
 | mybatis | jpa        | 说明                                                   |
 | ------- | ---------- | ------------------------------------------------------ |
 | Vo      | Entity     | 两者都需要一个pojo 类完成与数据库的映射。              |
@@ -195,10 +262,41 @@ List<Order> orders = orderMappers.findByUserId(userId);
 
   其中需要注意的是，当去除`spring-boot-starter-data-jpa` 后可能会报没有数据源相关依赖，需要改成引用`spring-boot-starter-data-jdbc`
 
+  
+
+  ### MybatisPlug  插件配置
+
+  下面主要启动了mybatisplug 的分页插件，
+  
+  ```java
+  @Configuration
+  @MapperScan("test.server.mybatis.mapper")
+  public class MybatisConfig {
+  
+      /**
+       * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)
+       */
+      @Bean
+      public MybatisPlusInterceptor mybatisPlusInterceptor() {
+          MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+          interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.H2));
+          return interceptor;
+      }
+  
+      @Bean
+      public ConfigurationCustomizer configurationCustomizer() {
+          return configuration -> configuration.setUseDeprecatedExecutor(false);
+      }
+  
+  }
+  ```
+  
+  
+
   ### 相关配置项
-
+  
   例子中使用log4jdbc输出sql ,配置如下
-
+  
   ```yml
   spring:
     jpa:
@@ -211,7 +309,6 @@ List<Order> orders = orderMappers.findByUserId(userId);
       password: sa
       driver-class-name: net.sf.log4jdbc.DriverSpy
     #    driver-class-name: org.h2.Driver
-  
     h2:
       console:
         enabled: true
@@ -225,7 +322,7 @@ List<Order> orders = orderMappers.findByUserId(userId);
       jdbc.sqltiming: info
   
   ```
-
+  
   
 
 相关配置主要有下面三部分
@@ -420,10 +517,10 @@ public class MybatisGenerator {
 其中代码中需要注意带注释的地方，使用请先看一遍代码。另外代码生成器需要选择对应的模板引擎，例子中使用
 
 ```xml
-        <dependency>	
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
+<dependency>	
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-freemarker</artifactId>
+</dependency>
 ```
 
 
@@ -508,6 +605,7 @@ mybatis 的级联查询主要使用了 `association` 和 `collection` 。配置�
     <resultMap id="orderResultMap" type="test.server.mybatis.entity.Ordert">
         <id column="id" property="id"></id>
         <result property="name" column="name"/>
+        <result property="userId" column="user_id"/>
         <association property="user"
                      column="user_id" select="test.server.mybatis.mapper.UserMapper.selectByUserId"></association>
     </resultMap>

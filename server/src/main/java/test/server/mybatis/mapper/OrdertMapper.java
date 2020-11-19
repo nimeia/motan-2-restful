@@ -1,7 +1,7 @@
 package test.server.mybatis.mapper;
 
-import test.server.mybatis.entity.Ordert;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import test.server.mybatis.entity.Ordert;
 
 /**
  * <p>

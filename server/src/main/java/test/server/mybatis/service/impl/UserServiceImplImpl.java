@@ -1,9 +1,9 @@
 package test.server.mybatis.service.impl;
 
+import org.springframework.stereotype.Service;
 import test.server.mybatis.entity.User;
 import test.server.mybatis.mapper.UserMapper;
 import test.server.mybatis.service.IUserService;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>

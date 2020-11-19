@@ -1,7 +1,5 @@
 package test.server.entity;
 
-import org.apache.ibatis.annotations.Select;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;

@@ -1,9 +1,9 @@
 package test.server.mybatis.service.impl;
 
+import org.springframework.stereotype.Service;
 import test.server.mybatis.entity.Ordert;
 import test.server.mybatis.mapper.OrdertMapper;
 import test.server.mybatis.service.IOrdertService;
-import org.springframework.stereotype.Service;
 
 /**
  * <p>

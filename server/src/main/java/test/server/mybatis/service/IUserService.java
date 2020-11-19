@@ -1,7 +1,6 @@
 package test.server.mybatis.service;
 
 import test.server.mybatis.entity.User;
-import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>

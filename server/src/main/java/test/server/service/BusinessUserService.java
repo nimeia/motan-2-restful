@@ -87,39 +87,63 @@ public class BusinessUserService {
         return all;
     }
 
-    public List<User> findAllUserPo() {
-        //你可以调用自动生成的service 去查询
-//        List<User>  users = userService.list();
-//        return users;
+    /**
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public List<User> mybatisSave() {
+        // 请注意，mybatis 与 jpa 的映射对象不一样
+        // 详见 https://mybatis.plus/guide/annotation.html#tableid
+        User user = new User();
+        user.setName("huang");
 
-        //或者可以用mapper查询 ，mapper 等同于 jap 的repos
+        // 单表保存例子
+        // userMapper.insert(user);
+        // 也可以使用mybatis 生成的service ，建议使用service。
+        userService.save(user);
+
+        //级联保存例子
+        User demo = new User();
+        demo.setName("demo2");
+        Ordert ordert1 = new Ordert();
+        ordert1.setName("order_name1");
+        Ordert ordert2 = new Ordert();
+        ordert2.setName("order_name1");
+        List<Ordert> orderts = new ArrayList<>();
+        orderts.add(ordert1);
+        orderts.add(ordert2);
+        demo.setOrdertList(orderts);
+
+        return null;
+    }
+
+    /**
+     * mybatis 查询演示，例子中使用 mybatis plus
+     * @return
+     */
+    public List<User> mybatisQuery() {
+
+        // 例子中直接演示使用mapper查询，改造过程中请使用mybatis 生成的service,service 提供更多的方法
+        // 例子中使用和mybatis 一对多，多对一的关联，请注意 映射对象 @TableName 中 resultMap = "userResultMap"
+        // userResultMap 对应于 UserMapper.xml 中的定义
+        // 注意输出时user 与 order 会出现循环引用报错，输出时要转成vo
+
+        // 或者可以用mapper查询 ，mapper 等同于 jap 的repos
         QueryWrapper wrapper = new QueryWrapper();
-
         wrapper.eq("name", "hello");
-//        wrapper.order
-//
-//        User user1 = new User();
-//        user1.setName("huang");
-//        userMapper.insert(user1);
 
-//        Long id=1328991782443573249L;
-
+        // 带分页的查询
         Page<User> page = new Page<>(0, 10);
         Page<User> userPage = userMapper.selectPage(page, wrapper);
         List<User> records = userPage.getRecords();
 
-
+        //按条件查询
         List<User> users = userMapper.selectList(wrapper);
 
+        // 按id 查询
         User user = userMapper.selectByUserId(1L);
-
         Ordert ordert = ordertMapper.selectById(2L);
-//        System.out.println(ordert);
-        //注意输出时user 与 order 会出现循环引用报错，输出时要转成vo
 
-//        userMapper.
         return null;
     }
-
-
 }

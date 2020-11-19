@@ -98,10 +98,17 @@ public class BusinessUserService {
         User user = new User();
         user.setName("huang");
 
+        Ordert ordert = new Ordert();
+        ordert.setName("my order 1");
+//        ordert.setUser(user);
+
         // 单表保存例子
         // userMapper.insert(user);
         // 也可以使用mybatis 生成的service ，建议使用service。
         userService.save(user);
+        // 注意保存后getId 才能有值
+        ordert.setUserId(user.getId());
+        ordertMapper.insert(ordert);
 
         //级联保存例子
         User demoUser = new User();

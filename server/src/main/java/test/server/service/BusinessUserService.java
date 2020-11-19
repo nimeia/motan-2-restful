@@ -104,16 +104,22 @@ public class BusinessUserService {
         userService.save(user);
 
         //级联保存例子
-        User demo = new User();
-        demo.setName("demo2");
+        User demoUser = new User();
+        demoUser.setName("demo2");
         Ordert ordert1 = new Ordert();
         ordert1.setName("order_name1");
         Ordert ordert2 = new Ordert();
-        ordert2.setName("order_name1");
+        ordert2.setName("order_name2");
         List<Ordert> orderts = new ArrayList<>();
         orderts.add(ordert1);
         orderts.add(ordert2);
-        demo.setOrdertList(orderts);
+        demoUser.setOrdertList(orderts);
+
+        // 级联保存，其实就是把所有sql 写到xml ,不建议使用
+        // 这种情况 字表的id 可能不会自动生成，
+        ordert1.setId(System.currentTimeMillis() +1);
+        ordert2.setId(System.currentTimeMillis() +2);
+        userMapper.insertAll(demoUser);
 
         return null;
     }
@@ -145,6 +151,7 @@ public class BusinessUserService {
         Ordert ordert = ordertMapper.selectById(2L);
 
         // native sql 分页例子
+        // 注意观察 xml 中使用了resultmap ,如果不定义，关联对象不会自动查询
         List<User> userList = userMapper.selectByName("demo");
         IPage<User> userIPage = userMapper.selectByName(page,"hello");
 

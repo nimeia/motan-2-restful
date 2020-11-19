@@ -7,16 +7,27 @@
         <result property="name" column="name"/>
         <collection property="ordertList" column="id" fetchType="lazy" select="selectOrderByUserId"/>
     </resultMap>
+    <insert id="insertAll">
+        insert into user (id,name) values(#{id},#{name}) ;
+        <if test="ordertList != null">
+            <foreach collection="ordertList" item="order">
+                insert into ordert (id,name,user_id) values(#{order.id},#{order.name},#{id}) ;
+            </foreach>
+        </if>
+    </insert>
 
-    <select id="selectOrderByUserId" parameterType="int" resultMap="test.server.mybatis.mapper.OrdertMapper.orderResultMap">
+    <select id="selectOrderByUserId" parameterType="int"
+            resultMap="test.server.mybatis.mapper.OrdertMapper.orderResultMap">
         select id,name,user_id from ordert where user_id = #{id}
     </select>
 
+    <!--    注意方法中使用了resultmap ,如果不定义，关联对象不会自动查询-->
     <select id="selectByUserId" parameterType="long" resultMap="userResultMap">
         select id,name from user where id= #{id}
     </select>
 
-    <select id="selectByName" resultType="test.server.mybatis.entity.User">
+    <!--    注意方法中使用了resultmap ,如果不定义，关联对象不会自动查询-->
+    <select id="selectByName" resultType="test.server.mybatis.entity.User" resultMap="userResultMap">
         select * from user where name = #{name}
     </select>
 

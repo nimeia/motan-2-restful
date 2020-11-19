@@ -22,4 +22,6 @@ public interface UserMapper extends BaseMapper<User> {
     List<User> selectByName(String name);
 
     IPage<User> selectByName(Page<User> page, String name);
+
+    void insertAll(User user);
 }

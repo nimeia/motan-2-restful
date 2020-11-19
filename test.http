@@ -16,3 +16,6 @@ GET http://localhost:8081/jpa
 
 ###
 GET http://localhost:8081/mybatis
+
+###
+GET http://localhost:8081/j2m

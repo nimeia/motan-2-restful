@@ -1,6 +1,9 @@
 package test.server.mybatis.service;
 
+import test.server.entity.UserEntity;
 import test.server.mybatis.entity.User;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,4 +15,5 @@ import test.server.mybatis.entity.User;
  */
 public interface IUserService extends IBaseService<User> {
 
+    List<UserEntity> findAllByName(String name);
 }

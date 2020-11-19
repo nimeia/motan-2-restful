@@ -165,4 +165,26 @@ public class BusinessUserService {
 
         return null;
     }
+
+    /**
+     * jpa 转 mybatis 流程
+     */
+    public void jpaToMybatisDemo(UserEntity userEntity) {
+
+        // 假如以前jpa 的一个方法使用了 JpaRepository 的save 方法保存，例如下面例子
+        userRepos.findAllByName(userEntity.getName());
+
+        // 修改后，我们使用 mybatis 的service 代替，如果比较简单的可以使用 mybatis 的mapper完成操作
+        // 操作流程
+        // 1,直接把方法copy 到userService 对象上，这里会提示没有该方法
+        // 2,使用ide 快速方式生成方法，idea 中使用 alt+enter 自动生成
+        // 3,注意，如果原来方法中没有找到返回值 ，idea 不会自动生成，例如
+        //**************************
+        // userService.findAllByName(userEntity.getName());
+        //**************************
+        // 另外请注意，如果是公共的方法，可以在baseservice 中定义，那其它类就可以不再实现
+        userService.findAllByName(userEntity.getName());
+
+
+    }
 }

@@ -1,10 +1,11 @@
-POST http://localhost:8081/_api/demo
+POST http://localhost:8081/_api/test
 Content-Type: application/json
 
 {
   "id": 1000,
   "name": "huang"
 }
+
 
 
 ###

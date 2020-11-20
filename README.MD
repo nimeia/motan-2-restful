@@ -135,6 +135,36 @@ demo:
 
 
 
+### 多参数改成单参数
+
+```java
+/**
+ * 替换例子，把motan 的多参数封装成一个参数传输
+ * @param rpcRequestVo
+ * @return
+ */
+@RequestMapping("update")
+List<User> update(RpcRequestVo<User> rpcRequestVo);
+```
+
+#### 调用样例
+
+```java
+//多参数封装例子
+RpcRequestVo<User> rpcRequestVo = new RpcRequestVo<>();
+//设置一些分页参数
+rpcRequestVo.setPageNumber(0);
+rpcRequestVo.setPageSize(10);
+//传递一些排序参数
+RpcRequestOrderVo rpcRequestOrderVo = new RpcRequestOrderVo("name", RpcRequestOrderVo.ORDER_TYPE_DESC);
+rpcRequestVo.addOrder(rpcRequestOrderVo);
+rpcRequestVo.setArgs(user);
+
+demoRestApi.update(rpcRequestVo);
+```
+
+
+
 ## jpa 转 mybatic
 
 ### 样例说明

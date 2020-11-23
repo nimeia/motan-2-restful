@@ -196,7 +196,7 @@ public Object mybatis() {
     // mybatis 保存例子，例子中使用了mybatis plus ，未使用过的同事请先阅读对应的文档
     List<User> userPos = businessUserService.mybatisSave();
     // mybatis 查询例子
-    businessUserService.mybatisQuery();
+    businessUserService.mybatis`();
 
     return userPos;
 }
@@ -253,6 +253,14 @@ List<Order> orders = orderMappers.findByUserId(userId);
 > https://github.com/abel533/Mapper
 
 下面以 `mybatis plus ` 插件整合为例描述整个迁移过程
+
+
+
+### mybatis 编码建议
+
+> 项目中整合了mybatis plus ，当单表查询，无需动态组合条件时，建议使用mybatis plus 的QueryWrapper。
+>
+> 多表查询或者更加复杂的条件时，可以使用xml 组织sql
 
 ### 整合mybatis plus 
 
